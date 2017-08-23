@@ -20,6 +20,7 @@ public class Main {
         calculateGoalAmount();
 
         //Bygg rekursiv grej
+        
 
     }
 
@@ -74,25 +75,26 @@ public class Main {
     }
 
     public static int age(){
-        return Integer.parseInt(JOptionPane.showInputDialog(null, "How old are they?"));
+        return Integer.parseInt(JOptionPane.showInputDialog(null, "How old is " + name +"?"));
     }
 
     public static int seed(){
-        return Integer.parseInt(JOptionPane.showInputDialog(null, "What is their seed?"));
+        return Integer.parseInt(JOptionPane.showInputDialog(null, "What is " + name + "s seed?"));
     }
 
     public static int income(){
-        return Integer.parseInt(JOptionPane.showInputDialog(null, "How much do they invoice each month? (based on 11 months of working)"));
+        return Integer.parseInt(JOptionPane.showInputDialog(null, "How much do " + name + " invoice each month? (based on 11 months of working)"));
     }
 
     public static int futurePayOut(){
-        return Integer.parseInt(JOptionPane.showInputDialog(null, "What do they want for future monthly payout?"));
+        return Integer.parseInt(JOptionPane.showInputDialog(null, "What does " + name + " want for future monthly payout?"));
     }
 
     private static void calculateGoalAmount() {
         for(People p : people){
-            
+            goalz += p.getFuturePayout();
         }
+        goalz = (int) (goalz*12/0.06);
     }
 
     /*
