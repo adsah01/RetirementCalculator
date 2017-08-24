@@ -13,6 +13,9 @@ public class Main {
     public static String name;
     public static ArrayList<People> people = new ArrayList<>();
     public static double interest = 1.06;
+    public static int totalAssets;
+    public static int nrOfMonths;
+    public static int receivedInterest;
 
     public static void main(String[] args) {
         // Bygg den recursivt den där den räknar år för år - when interestBearingCapital = goalz lifeVacation is true
@@ -20,14 +23,32 @@ public class Main {
         calculateGoalAmount();
 
         //Bygg rekursiv grej
+        System.out.println(assetCount());
+        System.out.println(receivedInterest);
+        System.out.println();
         
 
     }
 
-    public static void assetCount(){
-        if(lifeVacation){
-            System.out.println("sweet");
+    public static int assetCount(){
+        nrOfMonths+=1;
+        for(People p: people){
+            p.setAssets(p.getAssets() + p.getInvoiceAmount());
+            if(nrOfMonths % 12==0){
+                calculateInterest(p);
+                p.setAssets((int) (p.getAssets()*interest));
+            }
         }
+        for(People p: people){
+            totalAssets += p.getAssets();
+        }
+        System.out.println("Month: " + nrOfMonths + "   Assets: " + totalAssets);
+
+        if(totalAssets >= goalz){
+            return nrOfMonths;
+        }
+        totalAssets = 0;
+        return assetCount();
     }
 
     public static void setUpConditions(){
@@ -92,16 +113,18 @@ public class Main {
 
     private static void calculateGoalAmount() {
         for(People p : people){
-            goalz += p.getFuturePayout();
+            goalz += p.getFuturePayout()/0.7;
         }
         goalz = (int) (goalz*12/0.06);
     }
 
-    /*
-    public static int interest(){
 
+    public static void calculateInterest(People p){
+        receivedInterest += p.getAssets()*0.06;
+        p.setAssets((int) (p.getAssets()*interest));
     }
 
+    /*
     public static int taxes(){
 
     }*/
