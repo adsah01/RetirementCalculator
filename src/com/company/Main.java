@@ -22,10 +22,17 @@ public class Main {
         setUpConditions();
         calculateGoalAmount();
 
-        //Bygg rekursiv grej
-        System.out.println(assetCount());
+        if(possibleConditions()){
+            assetCount();
+        }
+
+        else {
+            System.out.println("you guys want to much salary!");
+        }
+
+
         System.out.println(receivedInterest);
-        System.out.println();
+        System.out.println(nrOfMonths);
         
 
     }
@@ -33,10 +40,9 @@ public class Main {
     public static int assetCount(){
         nrOfMonths+=1;
         for(People p: people){
-            p.setAssets(p.getAssets() + p.getInvoiceAmount());
+            p.setAssets(p.getAssets() + p.getInvoiceAmount() - p.getSalary());
             if(nrOfMonths % 12==0){
                 calculateInterest(p);
-                p.setAssets((int) (p.getAssets()*interest));
             }
         }
         for(People p: people){
@@ -54,6 +60,19 @@ public class Main {
     public static void setUpConditions(){
         groupConditions();
         individualConditions();
+    }
+
+    public static boolean possibleConditions(){
+        int salaryCost = 0;
+        int invoiceAmount = 0;
+        for(People p : people){
+            salaryCost += (int) ((p.getSalary()/0.7)+1);
+            invoiceAmount += p.getInvoiceAmount();
+        }
+        if(invoiceAmount > salaryCost){
+            return true;
+        }
+        return false;
     }
 
     public static void groupConditions(){
@@ -83,6 +102,7 @@ public class Main {
         wp.setAge(age());
         wp.setAssets(seed());
         wp.setInvoiceAmount(income());
+        wp.setSalary(salary());
         wp.setFuturePayout(futurePayOut());
         people.add(wp);
     }
@@ -91,6 +111,7 @@ public class Main {
         People nwp = new NonWorkingPerson();
         nwp.setName(name);
         nwp.setAge(age());
+        nwp.setSalary(salary());
         nwp.setFuturePayout(futurePayOut());
         people.add(nwp);
     }
@@ -111,6 +132,10 @@ public class Main {
         return Integer.parseInt(JOptionPane.showInputDialog(null, "What does " + name + " want for future monthly payout?"));
     }
 
+    public static int salary(){
+        return (int)((Integer.parseInt(JOptionPane.showInputDialog(null, "What does " + name + " want for salary?"))/0.7)+1);
+    }
+
     private static void calculateGoalAmount() {
         for(People p : people){
             goalz += p.getFuturePayout()/0.7;
@@ -118,14 +143,13 @@ public class Main {
         goalz = (int) (goalz*12/0.06);
     }
 
-
     public static void calculateInterest(People p){
         receivedInterest += p.getAssets()*0.06;
         p.setAssets((int) (p.getAssets()*interest));
     }
 
     /*
-    public static int taxes(){
+    public static int taxesAndCompanyLoan(){
 
     }*/
 }

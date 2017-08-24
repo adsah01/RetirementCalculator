@@ -9,6 +9,7 @@ public class People {
     private int age;
     private int assets;
     private int invoiceAmount;
+    private int salary;
     private int futurePayout;
 
     public People(){
@@ -39,11 +40,9 @@ public class People {
         this.invoiceAmount = invoiceAmount;
     }
 
+    public int getSalary() { return salary; }
 
-    void print(){
-        System.out.println("This food is great");
-    }
-
+    public void setSalary(int salary) { this.salary = salary; }
 
     public int getAssets() {
         return assets;
